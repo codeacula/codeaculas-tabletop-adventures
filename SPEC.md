@@ -93,30 +93,6 @@
 * **External Node.js Server** to handle Discord webhooks and forward to GPT API (future)
 * **Open5e API / SRD Content** for rules and mechanics
 * **Python Environment** in CustomGPT for interacting with uploaded SQLite databases to manage game data dynamically
-* **HTML+JS Browser Overlay** for initiative, status, and shared session data visualization
-
-## Repository Structure (Proposed)
-
-```
-/manifest/                      # CustomGPT definitions
-  - actions.json               # Defined GPT Actions (Google, Discord)
-  - persona.md                 # GPT behavior/personality
-  - capabilities.yaml          # GPT-defined tools and APIs
-/spec/
-  - product_spec.md            # This file
-/docs/
-  - setup_guide.md             # How to configure Discord + Drive
-  - user_manual.md             # For end users
-  - SUPPORT.md                 # How users can get help and support
-/scripts/
-  - drive_integration.js
-  - discord_proxy.js
-  - sqlite_interface.py        # GPT-accessible Python helpers for SQLite
-  - open5e_import.py           # Converts Open5e JSON to SQLite tables
-/templates/
-  - character_template.json
-  - campaign_overview.md
-```
 
 ## Notes
 
@@ -131,7 +107,6 @@
 
 ## Next Steps
 
-* [x] Define GPT persona name and tone
 * [ ] Create CustomGPT manifest with scoped Actions for Google Drive
 * [ ] Build first script to write JSON character sheet to Drive
 * [ ] Draft sample interaction logs for each mode
