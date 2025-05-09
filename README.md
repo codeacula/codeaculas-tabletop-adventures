@@ -1,5 +1,7 @@
 # Codeacula's Tabletop Adventures
 
+![Banner](media/images/banner.png)
+
 A CustomGPT-powered Dungeons & Dragons assistant that helps you run immersive sessions, build characters, and manage campaigns — all with the help of a digital Dungeon Mistress named **Nyrae**.
 
 ---

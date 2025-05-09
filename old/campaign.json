@@ -1,0 +1,18 @@
+{
+  "id": "camp_new",
+  "title": "TO_BE_SET",
+  "dm": "DM_NAME",
+  "system": "dnd5e",
+  "tone": "",
+  "houseRules": [],
+  "players": [
+    { "discord": "PLAYER_1", "character": "" },
+    { "discord": "PLAYER_2", "character": "" }
+  ],
+  "locations": [],
+  "factions": [],
+  "npcs": [],
+  "quests": [],
+  "clocks": [],
+  "lastSession": 0
+}

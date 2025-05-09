@@ -1,0 +1,11 @@
+{
+  "id": "npc_captain_vexa",
+  "name": "Captain Vexa",
+  "role": "Dockmaster",
+  "motivation": "",
+  "secret": "",
+  "standing": "Neutral",
+  "loc": "loc_tidebreak",
+  "currentHP": null,   // fill only if used in combat
+  "notes": []
+}

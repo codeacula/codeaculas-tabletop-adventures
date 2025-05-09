@@ -1,0 +1,20 @@
+{
+  "id": "pc_char_name",
+  "player": "PLAYER_NAME",
+  "race": "",
+  "class": { "name": "", "lv": 1 },
+  "background": "",
+  "alignment": "",
+  "xp": 0,
+  "abilities": { "str": 0, "dex": 0, "con": 0, "int": 0, "wis": 0, "cha": 0 },
+  "pb": 2,
+  "ac": 0,
+  "speed": 30,
+  "hp": { "max": 0, "current": 0, "temp": 0 },
+  "slots": {},
+  "coins": { "gp": 0, "sp": 0, "cp": 0 },
+  "skillsPro": [],
+  "features": [],
+  "inventory": [],
+  "history": []
+}
