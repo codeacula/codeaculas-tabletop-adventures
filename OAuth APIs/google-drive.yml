@@ -1,0 +1,248 @@
+openapi: 3.1.0
+servers:
+  - url: https://www.googleapis.com/drive/v3
+info:
+  title: File Management API (Subset of Google Drive API)
+  description: API for creating, reading, updating, and deleting files in Google Drive.
+  version: v3
+  contact:
+    name: Google
+    url: https://google.com
+    x-twitter: youtube
+  license:
+    name: Creative Commons Attribution 3.0
+    url: http://creativecommons.org/licenses/by/3.0/
+  termsOfService: https://developers.google.com/terms/
+externalDocs:
+  url: https://developers.google.com/drive/
+tags:
+  - name: files
+paths:
+  /files:
+    get:
+      description: Lists the user's files. This method accepts the `q` parameter, which is a search query combining one or more search terms.
+      operationId: listFiles
+      parameters:
+        - name: q
+          in: query
+          description: A query for filtering the file results.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileList'
+      security:
+        - Oauth2: []
+      tags:
+        - files
+    post:
+      description: Creates a new file.
+      operationId: createFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/File'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+      security:
+        - Oauth2: []
+      tags:
+        - files
+  /files/generateIds:
+    get:
+      description: Generates a set of file IDs which can be provided in create or copy requests.
+      operationId: generateFileIds
+      parameters:
+        - name: count
+          in: query
+          description: The number of IDs to return.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+      security:
+        - Oauth2: []
+      tags:
+        - files
+  /files/trash:
+    delete:
+      description: Permanently deletes all of the user's trashed files.
+      operationId: emptyTrash
+      responses:
+        '200':
+          description: Successful response
+      security:
+        - Oauth2: []
+      tags:
+        - files
+  /files/{fileId}:
+    get:
+      description: Gets a file's metadata or content by ID.
+      operationId: getFile
+      parameters:
+        - name: fileId
+          in: path
+          required: true
+          description: The ID of the file.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+      security:
+        - Oauth2: []
+      tags:
+        - files
+    patch:
+      description: Updates a file's metadata and/or content.
+      operationId: updateFile
+      parameters:
+        - name: fileId
+          in: path
+          required: true
+          description: The ID of the file.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/File'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+      security:
+        - Oauth2: []
+      tags:
+        - files
+    delete:
+      description: Permanently deletes a file owned by the user without moving it to the trash.
+      operationId: deleteFile
+      parameters:
+        - name: fileId
+          in: path
+          required: true
+          description: The ID of the file.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: File deleted successfully
+      security:
+        - Oauth2: []
+      tags:
+        - files
+  /files/{fileId}/copy:
+    post:
+      description: Creates a copy of a file and applies any requested updates with patch semantics.
+      operationId: copyFile
+      parameters:
+        - name: fileId
+          in: path
+          required: true
+          description: The ID of the file to copy.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/File'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+      security:
+        - Oauth2: []
+      tags:
+        - files
+  /files/{fileId}/export:
+    get:
+      description: Exports a Google Workspace document to the requested MIME type and returns exported byte content.
+      operationId: exportFile
+      parameters:
+        - name: fileId
+          in: path
+          required: true
+          description: The ID of the file.
+          schema:
+            type: string
+        - name: mimeType
+          in: query
+          required: true
+          description: The MIME type of the format requested for conversion.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+      security:
+        - Oauth2: []
+      tags:
+        - files
+components:
+  schemas:
+    File:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        mimeType:
+          type: string
+components:
+  schemas:
+    File:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        mimeType:
+          type: string
+        parents:
+          type: array
+          items:
+            type: string
+    FileList:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
+        nextPageToken:
+          type: string
+  securitySchemes:
+    Oauth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.google.com/o/oauth2/auth
+          scopes:
+            https://www.googleapis.com/auth/drive: Full access to Google Drive
+            https://www.googleapis.com/auth/drive.file: View and manage Google Drive files and folders that you have opened or created with this app
