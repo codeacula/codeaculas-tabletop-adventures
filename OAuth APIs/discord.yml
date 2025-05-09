@@ -1,0 +1,212 @@
+openapi: 3.1.0
+info:
+  title: Discord API (OAuth2)
+  version: 1.0.0
+  description: OpenAPI spec for using Discord API directly with OAuth2 in a CustomGPT context.
+
+servers:
+  - url: https://discord.com/api/v10
+
+paths:
+  /channels/{channel_id}/messages:
+    post:
+      summary: Send a message to a Discord channel
+      operationId: sendDiscordMessage
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+      responses:
+        '200':
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscordMessage'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+    get:
+      summary: Read recent messages from a channel
+      operationId: getChannelMessages
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Message list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiscordMessage'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+  /guilds/{guild_id}/members:
+    get:
+      summary: List members of a guild
+      operationId: listGuildMembers
+      parameters:
+        - name: guild_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: Member list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiscordUser'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Missing GUILD_MEMBERS intent or forbidden
+
+  /guilds/{guild_id}/channels:
+    get:
+      summary: List channels in a guild
+      operationId: listGuildChannels
+      parameters:
+        - name: guild_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Channel list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiscordChannel'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+  /users/@me/guilds:
+    get:
+      summary: List guilds the user is in
+      operationId: listUserGuilds
+      responses:
+        '200':
+          description: User's guild list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiscordGuild'
+        '401':
+          description: Unauthorized
+
+components:
+  securitySchemes:
+    discordOAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2
+
+  schemas:
+    SendMessageRequest:
+      type: object
+      properties:
+        content:
+          type: string
+        embeds:
+          type: array
+          items:
+            type: object
+        tts:
+          type: boolean
+      required:
+        - content
+
+    DiscordMessage:
+      type: object
+      properties:
+        id:
+          type: string
+        content:
+          type: string
+        author:
+          $ref: '#/components/schemas/DiscordUser'
+        timestamp:
+          type: string
+          format: date-time
+
+    DiscordUser:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        discriminator:
+          type: string
+        bot:
+          type: boolean
+
+    DiscordChannel:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: integer
+        parent_id:
+          type: string
+
+    DiscordGuild:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        icon:
+          type: string
+        owner:
+          type: boolean
+        permissions:
+          type: string
+
+security:
+  - discordOAuth: []
